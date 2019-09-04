@@ -30,9 +30,7 @@ export default function Application(props) {
   }, []);
 
   const appointmentComponent = getAppointmentsForDay(state, state.day).map(
-    
     appointment => {
-
       const interview = getInterview(state, appointment.interview);
 
       return (
