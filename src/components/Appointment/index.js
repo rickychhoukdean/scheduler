@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
 import "./styles.scss";
+import React, { Fragment } from "react";
 import Header from "./Header.js";
 import Show from "./show.js";
 import Empty from "./Empty.js";
@@ -71,8 +71,6 @@ export default function Appointment(props) {
   function checkDelete() {
     transition(CONFIRM);
   }
-
-  console.log(props);
 
   return (
     <Fragment>

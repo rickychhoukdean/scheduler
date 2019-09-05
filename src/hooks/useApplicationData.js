@@ -1,10 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
-import {
-  getAppointmentsForDay,
-  getInterview,
-  getInterviewersForDay
-} from "../helpers/selectors";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -33,13 +28,6 @@ function reducer(state, action) {
 }
 
 export default function useApplicationData() {
-  //   const [state, setState] = useState({
-  //     day: "Monday",
-  //     days: [],
-  //     appointments: {},
-  //     interviewers: {}
-  //   });
-
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
@@ -82,7 +70,7 @@ export default function useApplicationData() {
       .then(dispatch({ type: "BOOK_INTERVIEW", value: appointments }));
   }
 
-  function deleteInterview(id, interview) {
+  function deleteInterview(id) {
     return axios.delete(`/api/appointments/${id}`);
   }
 
