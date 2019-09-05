@@ -18,6 +18,7 @@ import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
+import { tsPropertySignature } from '@babel/types';
 
 storiesOf("Button", module)
   .addParameters({
@@ -180,7 +181,7 @@ storiesOf("Appointment", module)
       selectedInterviewID={3}
       onSave={action("onSave")}
       onCancel={action("onCancel")}
-      
+      // selected
     />
   ))
   .add("Form Create", () => (

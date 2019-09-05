@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 
 import "./styles.scss";
 import Button from "../Button.js";
@@ -6,7 +6,7 @@ import InterviewerList from "../InterviewerList.js";
 
 export default function Form(props) {
   let [name, setName] = useState(props.name || "");
-  let [interviewer, setInterviewer] = useState(props.interviewer || null);
+  let [interviewer, setInterviewer] = useState(props.selectedInterviewID || null);
 
   function reset() {
     setName("");
@@ -19,7 +19,7 @@ export default function Form(props) {
   }
 
   function onSave() {
-    props.onSave(name,interviewer);
+    props.onSave(name, interviewer);
   }
 
   function nameStateChange(event) {
@@ -31,7 +31,7 @@ export default function Form(props) {
       <section className="appointment__card-left">
         <form autoComplete="off" onSubmit={event => event.preventDefault()}>
           <input
-            onChange={nameStateChange} //change this into a inline function
+            onChange={nameStateChange}
             className="appointment__create-input text--semi-bold"
             name="name"
             type="text"
@@ -43,9 +43,8 @@ export default function Form(props) {
         </form>
         <InterviewerList
           interviewers={props.interviewers}
-          selectedInterviewID={interviewer}
           setInterviewer={setInterviewer}
-          interviewer={interviewer}
+          selectedInterviewID={interviewer}
         />
       </section>
       <section className="appointment__card-right">

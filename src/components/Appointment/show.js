@@ -6,8 +6,9 @@ export default function show(props) {
     props.onDelete(props.student.name, props.interviewer);
   }
 
-  console.log(props, "show");
-
+  function onEdit() {
+    props.onEdit(props.student.name, props.interviewer);
+  }
   return (
     <main className="appointment__card appointment__card--show">
       <section className="appointment__card-left">
@@ -23,7 +24,7 @@ export default function show(props) {
             className="appointment__actions-button"
             src="images/edit.png"
             alt="Edit"
-            onClick={props.onEdit}
+            onClick={onEdit}
           />
           <img
             className="appointment__actions-button"

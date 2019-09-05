@@ -46,14 +46,13 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    axios
+    return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointment)
       .then(setState({ ...state, appointments }))
-      .catch(err => console.log(err));
   }
 
-  function deleteInterview(id) {
-    axios.delete(`/api/appointments/${id}`);
+  function deleteInterview(id, interview) {
+   return axios.delete(`/api/appointments/${id}`);
   }
 
   const appointmentComponent = getAppointmentsForDay(state, state.day).map(
