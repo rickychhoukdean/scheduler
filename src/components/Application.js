@@ -3,7 +3,11 @@ import axios from "axios";
 import DayList from "../components/DayList";
 import "components/Application.scss";
 import Appointment from "../components/Appointment";
-import { getAppointmentsForDay, getInterview } from "../helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay
+} from "../helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -17,9 +21,9 @@ export default function Application(props) {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`/api/days`),
-      axios.get(`/api/appointments`),
-      axios.get(`/api/interviewers`)
+      axios.get(`http://localhost:8001/api/days/`),
+      axios.get(`http://localhost:8001/api/appointments/`),
+      axios.get(`http://localhost:8001/api/interviewers/`)
     ]).then(all => {
       setState(prev => ({
         days: all[0].data,
@@ -28,6 +32,29 @@ export default function Application(props) {
       }));
     });
   }, []);
+
+  const interviewers = getInterviewersForDay(state, state.day);
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    axios
+      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .then(setState({ ...state, appointments }))
+      .catch(err => console.log(err));
+  }
+
+  function deleteInterview(id) {
+    axios.delete(`/api/appointments/${id}`);
+  }
 
   const appointmentComponent = getAppointmentsForDay(state, state.day).map(
     appointment => {
@@ -39,6 +66,9 @@ export default function Application(props) {
           id={appointment.id}
           time={appointment.time}
           interview={interview}
+          interviewers={interviewers}
+          bookInterview={bookInterview}
+          deleteInterview={deleteInterview}
         />
       );
     }
@@ -60,7 +90,7 @@ export default function Application(props) {
           className="sidebar__lhl sidebar--centered"
           src="images/lhl.png"
           alt="Lighthouse Labs"
-        />{" "}
+        />
       </section>
       <section className="schedule">{appointmentComponent}</section>
     </main>

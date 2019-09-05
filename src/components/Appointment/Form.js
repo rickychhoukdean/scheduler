@@ -3,9 +3,7 @@ import React, { useState, Fragment } from "react";
 import "./styles.scss";
 import Button from "../Button.js";
 import InterviewerList from "../InterviewerList.js";
-// import Header from "./Header.js";
-// import Show from "./Show.js";
-// import Empty from "./Empty.js"
+
 export default function Form(props) {
   let [name, setName] = useState(props.name || "");
   let [interviewer, setInterviewer] = useState(props.interviewer || null);
@@ -20,8 +18,8 @@ export default function Form(props) {
     props.onCancel();
   }
 
-  function save() {
-    props.onSave(name, interviewer);
+  function onSave() {
+    props.onSave(name,interviewer);
   }
 
   function nameStateChange(event) {
@@ -44,7 +42,7 @@ export default function Form(props) {
           />
         </form>
         <InterviewerList
-          interviewers={[props.interviewers]}
+          interviewers={props.interviewers}
           selectedInterviewID={interviewer}
           setInterviewer={setInterviewer}
           interviewer={interviewer}
@@ -55,7 +53,7 @@ export default function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={save}>
+          <Button confirm onClick={onSave}>
             Save
           </Button>
         </section>

@@ -10,16 +10,32 @@ const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 
-// useVisualMode();
-
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    props.bookInterview(props.id, interview);
+    transition(SHOW);
+  }
+
+  function deleteInterview(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    props.deleteInterview(props.id, interview);
+
+    transition(EMPTY);
+  }
+
   function onAdd() {
     transition(CREATE);
-    // return `<Form/>`;
   }
 
   function onCancel() {
@@ -29,12 +45,19 @@ export default function Appointment(props) {
   return (
     <Fragment>
       <Header time={props.time} />
-      {mode === CREATE && <Form interviewers={[]} onCancel={onCancel} />}
+      {mode === CREATE && (
+        <Form
+          interviewers={props.interviewers}
+          onCancel={onCancel}
+          onSave={save}
+        />
+      )}
       {mode === EMPTY && <Empty onAdd={onAdd} />}
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={deleteInterview}
         />
       )}
     </Fragment>
