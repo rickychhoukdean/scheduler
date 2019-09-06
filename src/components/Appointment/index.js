@@ -47,8 +47,7 @@ export default function Appointment(props) {
       interviewer
     };
     transition(DELETE, true);
-
-    debugger
+    
     props
       .deleteInterview(props.id, interview)
       .then(() => transition(EMPTY))
