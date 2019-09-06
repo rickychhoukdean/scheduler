@@ -42,12 +42,11 @@ export default function useApplicationData() {
     let num = 1;
     if (operation === "subtract") { num = -1; }
 
-   let newDays =  state.days.map(day => {
+    let newDays = state.days.map(day => {
       const correctDay = day.appointments.filter(day => day === id);
       if (correctDay.length > 0) {
         return { ...day, spots: day.spots + num };
-      } 
-      else return day;
+      } else return day;
     });
     dispatch({ type: "UPDATE_SPOTS", value: newDays });
   }
@@ -90,7 +89,6 @@ export default function useApplicationData() {
   }
 
   function deleteInterview(id) {
-    console.log(id);
     dayChanger(id, "add");
     return axios.delete(`/api/appointments/${id}`);
   }

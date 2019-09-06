@@ -30,7 +30,6 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING);
-
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
@@ -47,7 +46,7 @@ export default function Appointment(props) {
       interviewer
     };
     transition(DELETE, true);
-    
+
     props
       .deleteInterview(props.id, interview)
       .then(() => transition(EMPTY))

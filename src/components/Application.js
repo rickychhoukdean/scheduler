@@ -57,7 +57,10 @@ export default function Application() {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{appointmentComponent}</section>
+      <section className="schedule">{appointmentComponent}
+   
+      </section>
+
     </main>
   );
 }
