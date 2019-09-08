@@ -14,11 +14,29 @@ function reducer(state, action) {
         interviewers: action.values.interviewers
       };
     case "SET_INTERVIEW":
-      return;
-    case "BOOK_INTERVIEW":
-      return { ...state, appointments: action.value };
-    case "DELETE_INTERVIEW":
-      return;
+      if (action.interview) {
+        const appointment = {
+          ...state.appointments[action.id],
+          interview: { ...action.interview }
+        };
+
+        const appointments = {
+          ...state.appointments,
+          [action.id]: appointment
+        };
+        return { ...state,  appointments };
+      } else {
+        const appointment = {
+          ...state.appointments[action.id],
+          interview: null
+        };
+
+        const appointments = {
+          ...state.appointments,
+          [action.id]: appointment
+        };
+        return { ...state, appointments };
+      }
 
     case "UPDATE_SPOTS":
       return { ...state, days: action.value };
@@ -40,7 +58,9 @@ export default function useApplicationData() {
 
   function dayChanger(id, operation) {
     let num = 1;
-    if (operation === "subtract") { num = -1; }
+    if (operation === "subtract") {
+      num = -1;
+    }
 
     let newDays = state.days.map(day => {
       const correctDay = day.appointments.filter(day => day === id);
@@ -68,29 +88,36 @@ export default function useApplicationData() {
         }
       });
     });
-  }, []);
+
+    const webSocket = new WebSocket("ws://localhost:8001");
+
+    webSocket.onopen = function() {
+      webSocket.send(`Socket initialized`);
+    };
+
+    webSocket.onmessage = function(message) {
+      let parsedMessage = JSON.parse(message.data);
+      if (parsedMessage.type === "SET_INTERVIEW") {
+        dispatch({ ...parsedMessage });
+      }
+    };
+  },[]);
 
   function bookInterview(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-
-    dayChanger(id, "subtract");
-
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
-      .then(dispatch({ type: "BOOK_INTERVIEW", value: appointments }));
+      .put(`http://localhost:8001/api/appointments/${id}`, {
+        interview
+      })
+      .then(dayChanger(id, "subtract"))
+      .then(dispatch({ type: "SET_INTERVIEW", interview, id }))
   }
 
   function deleteInterview(id) {
-    dayChanger(id, "add");
-    return axios.delete(`/api/appointments/${id}`);
+    return axios
+      .delete(`/api/appointments/${id}`)
+      .then(dayChanger(id, "add"))  
+      .then(dispatch({ type: "SET_INTERVIEW", id }))
   }
+
   return { state, setDay, bookInterview, deleteInterview };
 }

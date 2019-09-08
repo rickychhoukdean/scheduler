@@ -2,7 +2,7 @@ import React from "react";
 import DayList from "../components/DayList";
 import "components/Application.scss";
 import Appointment from "../components/Appointment";
-import useApplicationData from "../hooks/useApplicationData"
+import useApplicationData from "../hooks/useApplicationData";
 import {
   getAppointmentsForDay,
   getInterview,
@@ -10,7 +10,6 @@ import {
 } from "../helpers/selectors";
 
 export default function Application() {
-
   const {
     state,
     setDay,
@@ -19,7 +18,6 @@ export default function Application() {
   } = useApplicationData();
 
   const interviewers = getInterviewersForDay(state, state.day);
-
 
   const appointmentComponent = getAppointmentsForDay(state, state.day).map(
     appointment => {
@@ -57,10 +55,7 @@ export default function Application() {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{appointmentComponent}
-   
-      </section>
-
+      <section className="schedule">{appointmentComponent}</section>
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import "./styles.scss";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Header from "./Header.js";
 import Show from "./show.js";
 import Empty from "./Empty.js";
@@ -36,10 +36,6 @@ export default function Appointment(props) {
       .catch(error => transition(ERROR_SAVE, true));
   }
 
-  function edit() {
-    transition(EDIT);
-  }
-
   function deleteInterview(name, interviewer) {
     const interview = {
       student: name,
@@ -66,9 +62,14 @@ export default function Appointment(props) {
     back();
   }
 
-  function checkDelete() {
-    transition(CONFIRM);
-  }
+  useEffect(() => {
+    if (props.interview && mode === EMPTY) {
+      transition(SHOW);
+    }
+    if (props.interview === null && mode === SHOW) {
+      transition(EMPTY);
+    }
+  }, [props.interview, transition, mode]);
 
   return (
     <Fragment>
@@ -97,7 +98,6 @@ export default function Appointment(props) {
           onConfirm={deleteInterview}
         />
       )}
-
       {mode === EMPTY && <Empty onAdd={onAdd} />}
 
       {mode === DELETE && <Status message={"Deleting"} />}
@@ -110,13 +110,12 @@ export default function Appointment(props) {
       {mode === ERROR_DELETE && (
         <Error message={"Could not delete appointment"} onClose={onClose} />
       )}
-
-      {mode === SHOW && (
+      {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onDelete={checkDelete}
-          onEdit={edit}
+          onEdit={() => transition(EDIT)}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
     </Fragment>
