@@ -9,9 +9,9 @@ function reducer(state, action) {
     case "SET_APPLICATION_DATA":
       return {
         ...state,
-        days: action.values.days,
-        appointments: action.values.appointments,
-        interviewers: action.values.interviewers
+        days: action.days,
+        appointments: action.appointments,
+        interviewers: action.interviewers
       };
     case "SET_INTERVIEW":
       if (action.interview) {
@@ -24,7 +24,7 @@ function reducer(state, action) {
           ...state.appointments,
           [action.id]: appointment
         };
-        return { ...state,  appointments };
+        return { ...state, appointments };
       } else {
         const appointment = {
           ...state.appointments[action.id],
@@ -75,19 +75,20 @@ export default function useApplicationData() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:8001/api/days/`),
-      axios.get(`http://localhost:8001/api/appointments/`),
-      axios.get(`http://localhost:8001/api/interviewers/`)
-    ]).then(all => {
-      dispatch({
-        type: "SET_APPLICATION_DATA",
-        values: {
-          days: all[0].data,
-          appointments: all[1].data,
-          interviewers: all[2].data
-        }
-      });
-    });
+      axios.get("/api/days/"),
+      axios.get("/api/appointments/"),
+      axios.get("/api/interviewers/")
+    ])
+      .then(url => {
+        dispatch({
+          type: "SET_APPLICATION_DATA",
+
+          days: url[0].data,
+          appointments: url[1].data,
+          interviewers: url[2].data
+        });
+      })
+      .catch(err => err);
 
     const webSocket = new WebSocket("ws://localhost:8001");
 
@@ -101,22 +102,22 @@ export default function useApplicationData() {
         dispatch({ ...parsedMessage });
       }
     };
-  },[]);
+  }, []);
 
   function bookInterview(id, interview) {
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, {
         interview
       })
-      .then(dayChanger(id, "subtract"))
       .then(dispatch({ type: "SET_INTERVIEW", interview, id }))
+      .then(dayChanger(id, "subtract"));
   }
 
   function deleteInterview(id) {
     return axios
       .delete(`/api/appointments/${id}`)
-      .then(dayChanger(id, "add"))  
       .then(dispatch({ type: "SET_INTERVIEW", id }))
+      .then(dayChanger(id, "add"));
   }
 
   return { state, setDay, bookInterview, deleteInterview };

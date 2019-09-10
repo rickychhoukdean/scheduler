@@ -4,5 +4,8 @@ import ReactDOM from "react-dom";
 import "index.scss";
 
 import Application from "components/Application";
+import { act } from "react-test-renderer";
 
-ReactDOM.render(<Application />, document.getElementById("root"));
+act(() => {
+  ReactDOM.render(<Application />, document.getElementById("root"));
+});
