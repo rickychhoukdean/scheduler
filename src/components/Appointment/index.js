@@ -1,5 +1,5 @@
 import "./styles.scss";
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "./Header.js";
 import Show from "./show.js";
 import Empty from "./Empty.js";
@@ -46,7 +46,9 @@ export default function Appointment(props) {
     props
       .deleteInterview(props.id, interview)
       .then(() => transition(EMPTY))
-      .catch(error => transition(ERROR_DELETE, true));
+      .catch(error => {
+        transition(ERROR_DELETE, true);
+      });
   }
 
   function onAdd() {
@@ -72,7 +74,7 @@ export default function Appointment(props) {
   }, [props.interview, transition, mode]);
 
   return (
-    <Fragment>
+    <article data-testid="appointment">
       <Header time={props.time} />
       {mode === CREATE && (
         <Form
@@ -118,6 +120,6 @@ export default function Appointment(props) {
           onDelete={() => transition(CONFIRM)}
         />
       )}
-    </Fragment>
+    </article>
   );
 }

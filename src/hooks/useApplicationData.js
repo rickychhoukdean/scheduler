@@ -105,19 +105,37 @@ export default function useApplicationData() {
   }, []);
 
   function bookInterview(id, interview) {
-    return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, {
-        interview
-      })
-      .then(dispatch({ type: "SET_INTERVIEW", interview, id }))
-      .then(dayChanger(id, "subtract"));
+    if (state.appointments[id].interview === null) {
+      return axios
+        .put(`/api/appointments/${id}`, {
+          interview
+        })
+        .then(() => {
+          dispatch({ type: "SET_INTERVIEW", interview, id });
+        })
+        .then(() => {
+          dayChanger(id, "subtract");
+        });
+    } else {
+      return axios
+        .put(`/api/appointments/${id}`, {
+          interview
+        })
+        .then(() => {
+          dispatch({ type: "SET_INTERVIEW", interview, id });
+        });
+    }
   }
 
   function deleteInterview(id) {
     return axios
       .delete(`/api/appointments/${id}`)
-      .then(dispatch({ type: "SET_INTERVIEW", id }))
-      .then(dayChanger(id, "add"));
+      .then(() => {
+        dispatch({ type: "SET_INTERVIEW", id });
+      })
+      .then(() => {
+        dayChanger(id, "add");
+      });
   }
 
   return { state, setDay, bookInterview, deleteInterview };
