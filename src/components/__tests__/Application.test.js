@@ -150,6 +150,5 @@ describe("Application", () => {
     fireEvent.click(getByText(appointment, "Confirm"));
 
     await waitForElement(() => getByAltText(appointment, "Add"));
-    console.log(prettyDOM(container));
   });
 });
