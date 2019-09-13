@@ -2,7 +2,7 @@
 
 ## Setup
 
-Install dependencies with `npm install`.
+A single-page React app that allows the user to book / cancel / edit interviews. Must be run in conjunction with the [Scheduler-API server](https://github.com/rickychhoukdean/scheduler-api). Install dependencies with `npm install`.
 
 ## Running Webpack Development Server
 
@@ -21,3 +21,9 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Screenshots
+
+![Creating interview screenshot](src/images/create.png)
+
+![Deleting interview screenshot](src/images/delete.png)

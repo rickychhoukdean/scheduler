@@ -9,6 +9,7 @@ import reducer, {
 
 
 export default function useApplicationData() {
+  //Initial state
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
@@ -16,12 +17,12 @@ export default function useApplicationData() {
     interviewers: {}
   });
 
+//Helper function to update spots depending on the second parameter
   function dayChanger(id, operation) {
     let num = 1;
     if (operation === "subtract") {
       num = -1;
     }
-
     let newDays = state.days.map(day => {
       const correctDay = day.appointments.filter(day => day === id);
       if (correctDay.length > 0) {
@@ -32,7 +33,6 @@ export default function useApplicationData() {
   }
 
   const setDay = day => dispatch({ type: "SET_DAY", value: day });
-
   useEffect(() => {
     Promise.all([
       axios.get("/api/days/"),
@@ -42,7 +42,6 @@ export default function useApplicationData() {
       .then(url => {
         dispatch({
           type: "SET_APPLICATION_DATA",
-
           days: url[0].data,
           appointments: url[1].data,
           interviewers: url[2].data
@@ -50,8 +49,8 @@ export default function useApplicationData() {
       })
       .catch(err => err);
 
-    const webSocket = new WebSocket("ws://localhost:8001");
 
+    const webSocket = new WebSocket("ws://localhost:8001");
     webSocket.onopen = function() {
       webSocket.send(`Socket initialized`);
     };

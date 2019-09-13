@@ -1,3 +1,4 @@
+//Mock data for the JEST tests
 const fixtures = {
   days: [
     {
