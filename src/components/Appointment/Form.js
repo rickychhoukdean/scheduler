@@ -10,13 +10,11 @@ export default function Form(props) {
     props.selectedInterviewID || null
   );
   const [error, setError] = useState("");
-
   function validate() {
-    if (name === "") {
+    if (name === "") {  //I would like to make the if (name === "" || !interviewer) but that breaks the tests, will add later
       setError("Student name cannot be blank");
       return;
     }
-  
     setError("");
     props.onSave(name, interviewer);
   }
