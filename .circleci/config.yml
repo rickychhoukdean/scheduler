@@ -19,7 +19,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
 
- deploy:
+  deploy:
     machine:
       enabled: true
 
