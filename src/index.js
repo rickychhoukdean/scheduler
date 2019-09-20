@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
 import "index.scss";
-
 import Application from "components/Application";
 import { act } from "react-test-renderer";
 import axios from "axios";
@@ -10,7 +8,6 @@ import axios from "axios";
 if (process.env.REACT_APP_API_BASE_URL) {
   axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 }
-
 
 act(() => {
   ReactDOM.render(<Application />, document.getElementById("root"));
