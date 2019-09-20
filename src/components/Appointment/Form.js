@@ -11,7 +11,7 @@ export default function Form(props) {
   );
   const [error, setError] = useState("");
   function validate() {
-    if (name === "") {  //I would like to make the if (name === "" || !interviewer) but that breaks the tests, will add later
+    if (name === "" || !interviewer) {  //I would like to make the if (name === "" || !interviewer) but that breaks the tests, will add later
       setError("Student name cannot be blank");
       return;
     }
