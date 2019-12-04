@@ -50,7 +50,7 @@ export default function useApplicationData() {
       .catch(err => err);
 
 
-    const webSocket = new WebSocket("ws:https://interviewscheduler.netlify.com/");
+    const webSocket = new WebSocket("wss:https://interviewscheduler.netlify.com/");
     webSocket.onopen = function() {
       webSocket.send(`Socket initialized`);
     };
